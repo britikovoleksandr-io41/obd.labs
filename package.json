@@ -1,0 +1,27 @@
+{
+  "name": "obd.labs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prisma:pull": "prisma db pull",
+    "prisma:generate": "prisma generate",
+    "lab6:test": "node lab6/prisma-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.britikov.com:britikovoleksandr-io41/obd.labs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@prisma/client": "^7.8.0",
+    "prisma": "^7.8.0"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "pg": "^8.20.0"
+  }
+}

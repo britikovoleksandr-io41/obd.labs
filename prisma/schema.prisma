@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model books {
+  book_id      Int         @id @default(autoincrement())
+  category_id  Int?
+  title        String      @db.VarChar(255)
+  author       String      @db.VarChar(255)
+  is_available Boolean     @default(true)
+  categories   categories? @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  loans        loans[]
+  reviews      reviews[]
+}
+
+model categories {
+  category_id   Int     @id @default(autoincrement())
+  category_name String  @unique @db.VarChar(100)
+  books         books[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model loans {
+  loan_id     Int       @id @default(autoincrement())
+  member_id   Int?
+  book_id     Int?
+  loan_date   DateTime  @default(dbgenerated("CURRENT_DATE")) @db.Date
+  return_date DateTime? @db.Date
+  books       books?    @relation(fields: [book_id], references: [book_id], onDelete: NoAction, onUpdate: NoAction)
+  members     members?  @relation(fields: [member_id], references: [member_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model members {
+  member_id Int       @id @default(autoincrement())
+  full_name String    @db.VarChar(255)
+  phone     String?   @unique @db.VarChar(20)
+  email     String?   @unique @db.VarChar(255)
+  loans     loans[]
+  reviews   reviews[]
+}
+
+model reviews {
+  review_id  Int      @id @default(autoincrement())
+  book_id    Int
+  member_id  Int
+  rating     Int
+  comment    String?
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  books      books    @relation(fields: [book_id], references: [book_id], onDelete: NoAction, onUpdate: NoAction)
+  members    members  @relation(fields: [member_id], references: [member_id], onDelete: NoAction, onUpdate: NoAction)
+}
